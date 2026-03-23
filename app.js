@@ -160,40 +160,40 @@ function renderContacts() {
     };
   });
 }
+async function triggerTestCall(number) {
+  if (!number) return;
 
+  try {
+    const resp = await fetch("/.netlify/functions/call", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: [number],   // ✅ dynamic number
+        message: "Test call from SafeWave"
+      })
+    });
+
+    const json = await resp.json().catch(() => ({}));
+
+    console.log("CALL RESPONSE", json);
+
+    if (resp.ok) {
+      alert("Test call sent successfully!");
+      log("Test call success");
+    } else {
+      alert("Call failed: " + (json.error || "Unknown error"));
+      log("Test call failed: " + (json.error || "Unknown"));
+    }
+
+  } catch (err) {
+    console.error("Test call error", err);
+    alert("Test call failed (see console)");
+    log("Test call failed");
+  }
+}
 // ==========================
 //  CALL TRIGGER (Netlify function -> Twilio)
 // ==========================
-async function triggerCalls(phoneRecipients = [], currentCoordsParam = null) {
-  if (!phoneRecipients || phoneRecipients.length === 0) {
-    log('No phone numbers to call');
-    return { ok: false, error: 'no recipients' };
-  }
-  try {
-    const body = {
-      to: phoneRecipients,
-      message: `I need help. Location: ${currentCoordsParam ? currentCoordsParam.lat + ',' + currentCoordsParam.lon : 'Not available'}`,
-      from_name: 'SafeWave User'
-    };
-    const resp = await fetch(CALL_FUNCTION_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const json = await resp.json().catch(()=>({}));
-    if (resp.ok) {
-      log(`Call requests sent to ${phoneRecipients.length} number(s)`);
-      return json;
-    } else {
-      log('Call function returned error: ' + (json.error || resp.status));
-      return json;
-    }
-  } catch (err) {
-    console.error('Call error', err);
-    log('Call request failed: see console');
-    return { ok: false, error: err.message || err };
-  }
-}
 
 // ==========================
 //  SOS SEQUENCE
@@ -292,8 +292,13 @@ function cancelSOS() {
 async function triggerTestCall(number) {
   if (!number) return;
   try {
-    const resp = await fetch(CALL_FUNCTION_URL, {
-      method: 'POST',
+    await fetch("/.netlify/functions/call", {
+  method: "POST",
+  body: JSON.stringify({
+    to: ["+919999999999"],   // 👈 YOUR NUMBER HERE
+    message: "Emergency! I need help"
+  })
+});
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ to: [number], message: 'Test call from SafeWave', from_name: 'SafeWave Demo' })
     });
