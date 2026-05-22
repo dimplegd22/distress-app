@@ -210,7 +210,7 @@ async function performAlertSequence() {
     const emails = contacts.map(c => c.email).filter(Boolean);
     if (emails.length && window.emailjs) {
       const emailsStr = emails.join(',');
-      const template_params = {
+      const template_7wjlod7 = {
         to_email: emailsStr,
         from_name: 'SafeWave User',
         message: 'I need help. Please reach out as soon as possible.',
