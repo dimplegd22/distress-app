@@ -9,7 +9,7 @@ const CALL_FUNCTION_URL = '/.netlify/functions/call'; // change if your call fun
 // ==========================
 (function () {
   if (window.emailjs) {
-    try { emailjs.init('RR9SIRs9g99ygpLBQ'); } catch (e) { console.warn('EmailJS init failed', e); }
+    try { emailjs.init('7IBs3yVSeKiNhjsqm'); } catch (e) { console.warn('EmailJS init failed', e); }
   }
 })();
 
