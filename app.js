@@ -219,7 +219,7 @@ async function performAlertSequence() {
         time: new Date().toLocaleString()
       };
       try {
-        await emailjs.send('service_v12cyi8','template_7wjlod7', service_v12cyi8);
+        await emailjs.send('service_v12cyi8',template_7wjlod7);
         log('Alert emailed to: ' + emailsStr);
       } catch (err) {
         console.error('EmailJS send error', err);
